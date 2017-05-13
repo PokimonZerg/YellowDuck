@@ -13,14 +13,16 @@ pipeline {
 		}
 
 		stage("Integration testing") {
-			parallel(
-				"wildfly": {
-					bat 'mvn -P wildfly verify'
-				},
-				"payara": {
-					bat 'mvn -P payara verify'
-				}
-			)
+			steps {
+				parallel(
+					"wildfly": {
+						bat 'mvn -P wildfly verify'
+					},
+					"payara": {
+						bat 'mvn -P payara verify'
+					}
+				)
+			}
 		}
    }
 }
