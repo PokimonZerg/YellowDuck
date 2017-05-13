@@ -29,11 +29,5 @@ pipeline {
 			    bat 'mvn -P payara verify'
 		    }
 		}
-
-		stage("Deploy") {
-		    steps {
-			    bat 'mvn deploy'
-		    }
-		}
    }
 }
