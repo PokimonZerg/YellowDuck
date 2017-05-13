@@ -1,2 +1,21 @@
 # YellowDuck
-Test management system
+
+### About
+**YellowDuck** is a modern test manegement system. Key features:
+* Manage manual and automated test cases
+* Provide powerful test reporting and statistic
+* Execute automation tests using different environments
+* Written on Java
+
+### Build
+
+```bash
+# Without tests
+mvn install
+
+#  With tests using WildFly container
+mvn -P wildfly install
+
+# With tests using Payara container
+mvn -P payara install
+```
