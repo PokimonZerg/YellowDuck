@@ -1,4 +1,4 @@
-# YellowDuck build pipeline
+// YellowDuck build pipeline
 
 pipeline {
 
