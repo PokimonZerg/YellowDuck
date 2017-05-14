@@ -63,7 +63,7 @@
                                 <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                                 <jboss.home>target/wildfly-${wildfly-version}/</jboss.home>
                                 <jboss.module.path>target/wildfly-${wildfly-version}/modules</jboss.module.path>
-                                <jboss.http.port>8282</jboss.http.port>
+                                <jboss.options>-Djboss.http.port=8282</jboss.options>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
