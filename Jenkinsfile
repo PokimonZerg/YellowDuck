@@ -8,7 +8,7 @@ pipeline {
 
 		stage("Compile") {
 			steps {
-				bat 'mvn test'
+				sh 'mvn test'
 			}
 		}
 
@@ -16,10 +16,10 @@ pipeline {
 			steps {
 				parallel(
 					"wildfly": {
-						bat 'mvn -P wildfly verify'
+						sh 'mvn -P wildfly verify'
 					},
 					"payara": {
-						bat 'mvn -P payara verify'
+						sh 'mvn -P payara verify'
 					}
 				)
 			}
