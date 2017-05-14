@@ -64,7 +64,7 @@
                                 <jboss.home>target/wildfly-${wildfly-version}/</jboss.home>
                                 <jboss.module.path>target/wildfly-${wildfly-version}/modules</jboss.module.path>
                             </systemPropertyVariables>
-                            <argLine>-Djboss.socket.binding.port-offset=300</argLine>
+                            <argLine>-Djboss.http.port=8282</argLine>
                         </configuration>
                     </plugin>
                 </plugins>
