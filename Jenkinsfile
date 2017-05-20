@@ -37,9 +37,9 @@ pipeline {
         }
 
         stage("Deploy") {
-            /*when {
+            when {
                 expression { env.BRANCH_NAME == 'master' }
-            }*/
+            }
             steps {
                 sh 'cp -f target/yellowduck-0.1-SNAPSHOT.war /usr/share/nginx/html/yellowduck.war'
                 sh 'cp -f target/yellowduck-0.1-SNAPSHOT-swarm.jar /usr/share/nginx/html/yellowduck-swarm.jar'
