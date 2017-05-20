@@ -260,31 +260,7 @@
                 </plugins>
             </build>
 
-            <!--<dependencyManagement>-->
-            <!--<dependencies>-->
-            <!--<dependency>-->
-            <!--<groupId>org.wildfly.swarm</groupId>-->
-            <!--<artifactId>bom-all</artifactId>-->
-            <!--<version>${swarm-version}</version>-->
-            <!--<scope>import</scope>-->
-            <!--<type>pom</type>-->
-            <!--</dependency>-->
-            <!--</dependencies>-->
-            <!--</dependencyManagement>-->
-
             <dependencies>
-                <!--<dependency>-->
-                <!--<groupId>org.wildfly.swarm</groupId>-->
-                <!--<artifactId>cdi</artifactId>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                <!--<groupId>org.wildfly.swarm</groupId>-->
-                <!--<artifactId>jaxrs</artifactId>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                <!--<groupId>org.wildfly.swarm</groupId>-->
-                <!--<artifactId>jsf</artifactId>-->
-                <!--</dependency>-->
                 <dependency>
                     <groupId>org.wildfly.swarm</groupId>
                     <artifactId>arquillian</artifactId>
@@ -315,6 +291,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
+            <version>1.5.13</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
