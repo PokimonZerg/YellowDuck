@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>org.yellowduck</groupId>
     <artifactId>yellowduck</artifactId>
-    
     <version>0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    
-    <modules>
-        <module>portal</module>
-    </modules>
-    
+    <packaging>war</packaging>
+
     <issueManagement>
         <url>https://github.com/PokimonZerg/YellowDuck/issues</url>
         <system>GitHub Issues</system>
@@ -32,21 +29,28 @@
 
     <developers>
         <developer>
-            <email>kevinsawicki@gmail.com</email>
+            <email>this.aorekhov@yandex.ru</email>
             <name>Alexey Orekhov</name>
             <url>https://github.com/PokimonZerg</url>
             <id>aorekhov</id>
         </developer>
     </developers>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <logback-version>1.2.3</logback-version>
+
+        <wildfly-version>10.1.0.Final</wildfly-version>
+        <swarm-version>2017.5.0</swarm-version>
+        <payara-version>4.1.1.171.1</payara-version>
     </properties>
-    
+
     <build>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -66,22 +70,224 @@
                         <argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
                     </configuration>
                 </plugin>
+                <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+
+
+        <plugin>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>wildfly-swarm-plugin</artifactId>
+            <version>${swarm-version}</version>
+            <executions>
+                <execution>
+                     <goals>
+                         <goal>package</goal>
+                     </goals>
+                 </execution>
+            </executions>
+        </plugin>
+
+        </plugins>
+
     </build>
-    
+
+    <profiles>
+
+        <!-- Wildfly integration tests -->
+        <profile>
+            <id>wildfly</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.wildfly</groupId>
+                                            <artifactId>wildfly-dist</artifactId>
+                                            <version>${wildfly-version}</version>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>target</outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <maven.profile>wildfly</maven.profile>
+                                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                                <jboss.home>target/wildfly-${wildfly-version}/</jboss.home>
+                                <jboss.module.path>target/wildfly-${wildfly-version}/modules</jboss.module.path>
+                                <jboss.options>-Djboss.http.port=8282</jboss.options>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly.arquillian</groupId>
+                    <artifactId>wildfly-arquillian-container-managed</artifactId>
+                    <version>2.0.2.Final</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- Payara integration tests -->
+        <profile>
+            <id>payara</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <systemProperties>
+                                <maven.profile>payara</maven.profile>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.arquillian.container</groupId>
+                    <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+                    <version>1.0.0.Final</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>fish.payara.extras</groupId>
+                    <artifactId>payara-embedded-web</artifactId>
+                    <version>${payara-version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- Swarm integration tests -->
+        <profile>
+            <id>swarm</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <systemProperties>
+                                <maven.profile>swarm</maven.profile>
+                                <arquillian.launch>swarm</arquillian.launch>
+                                <arq.container.swarm.configuration.port>8485</arq.container.swarm.configuration.port>
+                                <arq.defaultprotocol.type>DaemonProtocol</arq.defaultprotocol.type>
+                                <swarm.http.port>8485</swarm.http.port>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <!--<dependencyManagement>-->
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.wildfly.swarm</groupId>-->
+                        <!--<artifactId>bom-all</artifactId>-->
+                        <!--<version>${swarm-version}</version>-->
+                        <!--<scope>import</scope>-->
+                        <!--<type>pom</type>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
+            <!--</dependencyManagement>-->
+
+            <dependencies>
+                <!--<dependency>-->
+                    <!--<groupId>org.wildfly.swarm</groupId>-->
+                    <!--<artifactId>cdi</artifactId>-->
+                <!--</dependency>-->
+                <!--<dependency>-->
+                    <!--<groupId>org.wildfly.swarm</groupId>-->
+                    <!--<artifactId>jaxrs</artifactId>-->
+                <!--</dependency>-->
+                <!--<dependency>-->
+                    <!--<groupId>org.wildfly.swarm</groupId>-->
+                    <!--<artifactId>jsf</artifactId>-->
+                <!--</dependency>-->
+                <dependency>
+                    <groupId>org.wildfly.swarm</groupId>
+                    <artifactId>arquillian</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.1.13.Final</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>bom-all</artifactId>
+                <version>${swarm-version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -90,12 +296,39 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
+            <version>${logback-version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.2.3</version>
+            <version>${logback-version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-depchain</artifactId>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
+
 </project>

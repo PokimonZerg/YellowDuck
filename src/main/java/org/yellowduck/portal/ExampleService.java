@@ -7,8 +7,9 @@ import javax.ws.rs.Path;
 public class ExampleService 
 {
     @GET
+    @Path("")
     public String hello()
     {
-        return "Hello Duck!";
+        return "Hello Duck!!";
     }
 }

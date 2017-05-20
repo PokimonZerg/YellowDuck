@@ -20,9 +20,18 @@ pipeline {
 					},
 					"payara": {
 						sh 'mvn -P payara verify'
+					},
+					"swarm": {
+					    sh 'mvn -P swarm verify'
 					}
 				)
 			}
+		}
+
+		stage("Package") {
+		    steps {
+		        sh 'mvn package'
+		    }
 		}
    }
 }

@@ -22,21 +22,19 @@ public class ExampleServiceIT
     @RunAsClient
     public void hello()
     {
-
+        int i = 0;
     }
 
     @Deployment
     public static WebArchive createDeployment() throws Exception
     {
-        WebArchive a = ShrinkWrap.create(WebArchive.class)
+         return ShrinkWrap.create(WebArchive.class)
                 .addAsLibraries(Maven.configureResolver()
-                        .loadPomFromFile("pom.xml")
-                        .importRuntimeDependencies()
+                        .loadPomFromFile("pom.xml", System.getProperty("maven.profile"))
+                        .importRuntimeAndTestDependencies()
                         .resolve()
                         .withTransitivity()
                         .asFile())
                 .addPackages(true, YellowDuckApplication.class.getPackage());
-        
-        return a;
     }
 }
