@@ -1,6 +1,6 @@
 # [YellowDuck](https://yellowduck.tech)
 
-[![Build Status](http://jenkins.yellowduck.tech/job/yellow-duck/badge/icon)](http://jenkins.yellowduck.tech/job/yellow-duck/)
+[![Build Status](http://jenkins.yellowduck.tech/job/yellow-duck/job/master/badge/icon)](http://jenkins.yellowduck.tech/job/yellow-duck/job/master/)
 
 ### About
 **YellowDuck** is a modern test manegement system. Key features:
