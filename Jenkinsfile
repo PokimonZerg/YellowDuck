@@ -35,5 +35,14 @@ pipeline {
                 sh 'mvn package'
             }
         }
+
+        stage("Deploy") {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
+            steps {
+                sh 'cp -f target/yellowduck-0.1-SNAPSHOT.war /usr/share/nginx/html/yellowduck.war'
+            }
+        }
 	}
 }
