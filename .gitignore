@@ -1,2 +1,5 @@
-*/target/
+target/
+.idea/
 nb-configuration.xml
+portal/portal.iml
+yellowduck.iml
