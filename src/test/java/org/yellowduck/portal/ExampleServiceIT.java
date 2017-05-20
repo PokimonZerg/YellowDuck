@@ -31,7 +31,7 @@ public class ExampleServiceIT
          return ShrinkWrap.create(WebArchive.class)
                 .addAsLibraries(Maven.configureResolver()
                         .loadPomFromFile("pom.xml", System.getProperty("maven.profile"))
-                        .importRuntimeAndTestDependencies()
+                        .importRuntimeDependencies()
                         .resolve()
                         .withTransitivity()
                         .asFile())

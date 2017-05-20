@@ -187,6 +187,7 @@
                         <configuration>
                             <systemProperties>
                                 <maven.profile>payara</maven.profile>
+                                <arq.defaultprotocol.type>Servlet 3.0</arq.defaultprotocol.type>
                             </systemProperties>
                         </configuration>
                     </plugin>

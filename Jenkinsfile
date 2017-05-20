@@ -2,7 +2,7 @@
 
 pipeline {
 
-	agent any
+    agent any
 
 	stages {
 
@@ -12,26 +12,28 @@ pipeline {
 			}
 		}
 
-		stage("Integration testing") {
+		stage("IT - Wildfly") {
 			steps {
-				parallel(
-					"wildfly": {
-						sh 'mvn -P wildfly verify'
-					},
-					"payara": {
-						sh 'mvn -P payara verify'
-					},
-					"swarm": {
-					    sh 'mvn -P swarm verify'
-					}
-				)
-			}
-		}
+			    sh 'mvn -P wildfly verify'
+            }
+        }
 
-		stage("Package") {
-		    steps {
-		        sh 'mvn package'
-		    }
-		}
-   }
+        stage("IT - Payara") {
+            steps {
+                sh 'mvn -P payara verify'
+            }
+        }
+
+        stage("IT - Swarm") {
+            steps {
+                sh 'mvn -P swarm verify'
+            }
+        }
+
+        stage("Package") {
+            steps {
+                sh 'mvn package'
+            }
+        }
+	}
 }
