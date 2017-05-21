@@ -21,3 +21,7 @@ mvn -P wildfly install
 # With tests using Payara container
 mvn -P payara install
 ```
+
+### Swagger
+You can use swagger to explore API and generate client: http://<host>/swagger
+
