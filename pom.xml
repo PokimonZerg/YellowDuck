@@ -85,7 +85,6 @@
 
         <plugins>
 
-
             <plugin>
                 <groupId>org.wildfly.swarm</groupId>
                 <artifactId>wildfly-swarm-plugin</artifactId>
@@ -97,6 +96,8 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                </configuration>
             </plugin>
 
         </plugins>
@@ -260,6 +261,18 @@
                 </plugins>
             </build>
 
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.wildfly.swarm</groupId>
+                        <artifactId>bom-all</artifactId>
+                        <version>${swarm-version}</version>
+                        <scope>import</scope>
+                        <type>pom</type>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+
             <dependencies>
                 <dependency>
                     <groupId>org.wildfly.swarm</groupId>
@@ -268,6 +281,7 @@
                 </dependency>
             </dependencies>
         </profile>
+
     </profiles>
 
     <dependencyManagement>
@@ -276,13 +290,6 @@
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
                 <version>1.1.13.Final</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wildfly.swarm</groupId>
-                <artifactId>bom-all</artifactId>
-                <version>${swarm-version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

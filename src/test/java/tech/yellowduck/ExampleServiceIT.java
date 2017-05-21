@@ -1,4 +1,4 @@
-package org.yellowduck.portal;
+package tech.yellowduck;
 
 import java.net.URL;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -14,7 +14,6 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class ExampleServiceIT
 {
-
     @ArquillianResource
     protected URL webappUrl;
 
