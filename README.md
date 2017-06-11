@@ -12,14 +12,8 @@
 ### Build
 
 ```bash
-# Without tests
-mvn install
-
-#  With tests using WildFly container
-mvn -P wildfly install
-
-# With tests using Payara container
-mvn -P payara install
+// With integration tests
+mvn clean package
 ```
 
 ### Swagger
