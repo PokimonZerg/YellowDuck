@@ -2,12 +2,13 @@ package tech.yellowduck;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-public class YellowduckApplication 
+public class YellowDuckApplication extends WebMvcConfigurerAdapter
 {
     public static void main(String[] args) 
     {
-        SpringApplication.run(YellowduckApplication.class, args);
+        SpringApplication.run(YellowDuckApplication.class, args);
     }
 }
